@@ -52,7 +52,7 @@ function World() {
 		grd.addColorStop(1, '#8ED6FF');   
 		// dark blue
 		grd.addColorStop(0, '#004CB3');
-		c.fillStyle = grd;
+		//c.fillStyle = grd;
 		c.fill();
 		
 
@@ -63,9 +63,9 @@ function World() {
 				drawPixel(i,j,227,227,227,a);
 			}
 		}
-		
-		updateCanvas();
 		*/
+		updateCanvas();
+		
 	};
 	
 	this.update = function(gs) {
