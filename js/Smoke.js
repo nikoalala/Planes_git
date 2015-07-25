@@ -13,6 +13,7 @@ function Smoke(x, y, a, s, life, origin_id, id) {
 	this.id = id;
 	
 	this.draw = function(c) {
+		console.debug("draw Smoke");
 		c.strokeStyle = smokeStrength[Math.floor(this.life * 10)];
 		c.beginPath();
 		c.arc(world.camera([this.x,this.y])[0], world.camera([this.x,this.y])[1], 2, 0, 2*Math.PI, true);

@@ -2,6 +2,7 @@ var mouseControl = true;
 var planePos = [0,0];
 var anglePlane = 0;
 var serverBox = [0,0,0,0];
+var background_sky;
 //var MAX_PARTICLES = 20;
 //var ANGLE_NEW_PARTICLES = 45; //degree
 
@@ -31,6 +32,8 @@ function World() {
 	this.init = function(gs) {
 		//background = new Background();
 		//gs.addEntity(background);
+		background_sky = new Image();
+		background_sky.src = "images/background_sky.png";
 	};
 
 	this.updateParticles = function(angle, speed) {
@@ -40,31 +43,28 @@ function World() {
 
 
 	this.draw = function(c,gs) {
+		console.debug("draw World");
 		gs.clear();
+		c.clearRect(0, 0, canvasWidth, canvasHeight);
+		//c.width = c.width;
 		gs.background('rgba(40, 40, 40, 1.0)');
 
-		c.rect(backgroundPos[0],backgroundPos[1],backgroundPos[2],backgroundPos[3]);
+		c.drawImage(background_sky,backgroundPos[0],backgroundPos[1]);
+
+		//c.rect(backgroundPos[0],backgroundPos[1],backgroundPos[2],backgroundPos[3]);
 
 		// add linear gradient
-		var grd = c.createLinearGradient(backgroundPos[0],backgroundPos[1],
-		 								backgroundPos[0],backgroundPos[3]);
+		/*var grd = c.createLinearGradient(backgroundPos[0],backgroundPos[1],backgroundPos[0],backgroundPos[3]);
 		// light blue
 		grd.addColorStop(1, '#8ED6FF');   
 		// dark blue
 		grd.addColorStop(0, '#004CB3');
-		c.fillStyle = grd;
+		c.fillStyle = grd;*/
 		c.fill();
 		
 
-		
-		/*for(var i = camPos[0] ; i < camPos[0] + canvasWidth ; i++) {
-			for(var j = camPos[1] ; j < camPos[1] + canvasHeight ; j++) {
-				var a = sNoise.noise(i,j);
-				drawPixel(i,j,227,227,227,a);
-			}
-		}
-		*/
-		updateCanvas();
+
+		//updateCanvas();
 		
 	};
 	
@@ -136,14 +136,6 @@ function World() {
 	};
 }
 
-function drawPixel (x, y, r, g, b, a) {
-    var index = (x + y * canvasWidth) * 4;
-
-    canvasData.data[index + 0] = r;
-    canvasData.data[index + 1] = g;
-    canvasData.data[index + 2] = b;
-    canvasData.data[index + 3] = a;
-}
 
 // That's how you update the canvas, so that your //
 // modification are taken in consideration //

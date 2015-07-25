@@ -38,6 +38,7 @@ function Plane(sprite) {
 	};
 	
 	this.draw = function(c,gs) {
+		console.debug("draw Plane");
 		var planePosCam = world.camera([this.x,this.y]);
 		nb_plane_draw++;
 		//this.sprite.set_scale(2);
