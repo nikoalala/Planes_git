@@ -43,7 +43,7 @@ function World() {
 
 
 	this.draw = function(c,gs) {
-		console.debug("draw World");
+		//console.debug("draw World");
 		gs.clear();
 		c.clearRect(0, 0, canvasWidth, canvasHeight);
 		//c.width = c.width;

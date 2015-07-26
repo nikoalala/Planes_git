@@ -30,6 +30,8 @@ var S = 1;
 var Cx = 1.0003;
 var Cz = 1;
 
+var PLANE_LIFE = 5;
+
 var WINDOW_SIZE = {w:800, h:600, deltaS:50, deltaM:20};
 
 var box = [0, 0, WINDOW_SIZE.w*2, WINDOW_SIZE.h*2];
@@ -60,6 +62,7 @@ wsServer.on('request', function(request) {
     connection.hits = {from:0, to:0};
     connection.boost = MAX_BOOST_TIME;
     connection.shift = false;
+    connection.life = PLANE_LIFE;
 
     clients[connection.id] = connection;
 
