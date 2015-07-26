@@ -49,7 +49,7 @@ function World() {
 		//c.width = c.width;
 		gs.background('rgba(40, 40, 40, 1.0)');
 
-		c.drawImage(background_sky,backgroundPos[0],backgroundPos[1]);
+		c.drawImage(background_sky,backgroundPos[0]-253,backgroundPos[1]-190);
 
 		//c.rect(backgroundPos[0],backgroundPos[1],backgroundPos[2],backgroundPos[3]);
 

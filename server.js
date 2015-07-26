@@ -33,7 +33,7 @@ var Cz = 1;
 
 var PLANE_LIFE = 5;
 
-var WINDOW_SIZE = {w:800, h:600, deltaS:50, deltaM:20};
+var WINDOW_SIZE = {w:2398, h:1798};
 
 var box = [0, 0, WINDOW_SIZE.w*2, WINDOW_SIZE.h*2];
 
@@ -215,19 +215,28 @@ var interval = setInterval(function() {
 
            
             //console.log(angleMod, plane.speed);
-            /*            //end of screen
-            if(plane.x > WINDOW_SIZE.w+WINDOW_SIZE.deltaS) {
-                plane.x = -WINDOW_SIZE.deltaM;
+                        //end of screen
+            if(plane.x > WINDOW_SIZE.w) {
+                //TODO : suicide
+                resetPlane(clients[i]);
+                clients[i].hits.from++;
+                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
             }
-            if(plane.x < -WINDOW_SIZE.deltaS) {
-                plane.x = WINDOW_SIZE.w+WINDOW_SIZE.deltaM;
+            if(plane.x < 0) {
+                resetPlane(clients[i]);
+                clients[i].hits.from++;
+                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
             }
-            if(plane.y > WINDOW_SIZE.h+WINDOW_SIZE.deltaS) {
-                plane.y = -WINDOW_SIZE.deltaM;
+            if(plane.y > WINDOW_SIZE.h) {
+                resetPlane(clients[i]);
+                clients[i].hits.from++;
+                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
             }
-            if(plane.y < -WINDOW_SIZE.deltaS) {
-                plane.y = WINDOW_SIZE.h+WINDOW_SIZE.deltaM;
-            }*/
+            if(plane.y < 0) {
+                resetPlane(clients[i]);
+                clients[i].hits.from++;
+                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
+            }
 
             data.push({type:"plane", id: plane.id, x:plane.x, 
                 y:plane.y, sv:{vx: plane.vx, vy:plane.vy}, l: clients[i].life, a:plane.angle, s:Math.sqrt(Math.pow(plane.vx,2)+Math.pow(plane.vy,2))});
@@ -256,8 +265,6 @@ var interval = setInterval(function() {
                             to:clients[i].id};
                             data.push(hitMsg);
 
-                           
-
                             clients[i].life--;
 
                             if(clients[i].life == 0) {
@@ -267,14 +274,12 @@ var interval = setInterval(function() {
                                 resetPlane(clients[i]);
                             }
 
-                            sendToAll({type:"players", data: {players:getUsers()}});
-
                             gameBullets[bul].l = -1;
                         }
                     }
                 }
             }
-
+            sendToAll({type:"players", data: {players:getUsers()}});
         }
     }
 
