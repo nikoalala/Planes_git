@@ -18,6 +18,7 @@ var V_ANGLE = PI / 128;
 var BULLET_LIFE = 5.0;
 var D_BULLET_LIFE = 0.08;
 var HIT_DISTANCE = 100;
+var PLANE_INIT_STAT = {x:0,y:50,a:0,vx:0,vy:0};
 
 var ratio = 1/1000;
 var F_MIN = 20*ratio;
@@ -57,7 +58,7 @@ wsServer.on('request', function(request) {
     
     sendToOne({type:"welcome", data:connection.id, world:{box:box}}, connection);
     
-    connection.gamePlane = {x:0, y:50, angle:0, F:F_MIN, id:connection.id, vx:0, vy:0};
+    initPlane(connection);
     connection.bullet = false;
     connection.hits = {from:0, to:0};
     connection.boost = MAX_BOOST_TIME;
@@ -258,6 +259,11 @@ var interval = setInterval(function() {
                             clients[i].hits.from++;
                             clients[gameBullets[bul].origin_id].hits.to++;
 
+                            clients[i].life--;
+                            if(clients[i].life == 0) {
+                                resetPlane(clients[i]);
+                            }
+
                             sendToAll({type:"players", data: {players:getUsers()}});
 
                             gameBullets[bul].l = -1;
@@ -270,7 +276,7 @@ var interval = setInterval(function() {
     }
 
 
-    sendToAll({type: "update", data:data})
+    sendToAll({type: "update", data:data});
     var date_end = new Date(); 
     //console.log(date_end-date_start, 1000/60)
 }, SECOND/FRAME_RATE)
@@ -278,6 +284,23 @@ var interval = setInterval(function() {
 var count_idPlanes = 0;
 function getID() {
     return "p"+(++count_idPlanes);
+}
+
+function initPlane(connection) {
+    connection.gamePlane = {};
+    connection.gamePlane.id = connection.id;
+    resetPlane(connection);
+}
+
+function resetPlane(client) {
+    client.life = PLANE_LIFE;
+
+    client.gamePlane.x = PLANE_INIT_STAT.x
+    client.gamePlane.y = PLANE_INIT_STAT.y
+    client.gamePlane.angle = PLANE_INIT_STAT.a
+    client.gamePlane.F = F_MIN
+    client.gamePlane.vx = PLANE_INIT_STAT.vx
+    client.gamePlane.vy = PLANE_INIT_STAT.vy
 }
 
 function getBulletID() {
