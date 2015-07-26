@@ -63,8 +63,19 @@ function handleUpdateMsg(json) {
             handleBulletMsg(data);                    
         } else if(data.type == "hit") {
             handleHitMsg(data);
-        }                 
+        } if(data.type == "event") {
+            handleEventMsg(data);
+        }             
     }
+}
+
+function handleEventMsg(data) {
+    var listEvent = $("#listEvents");
+
+    listEvent.append("<li>"+data.message+"</li>");
+
+    if($("#listEvents li").length > 5)
+        $("#listEvents li")[0].remove();
 }
 
 function handlePlaneMsg(data) {
@@ -76,6 +87,7 @@ function handlePlaneMsg(data) {
         plane.angle = data.a;
         plane.speed = data.s;
         plane.speedVector = data.sv; //{vx, vy}
+        plane.life = data.l;
 
         if(data.id == myPlayerID) {
             planePos = [data.x, data.y, data.s, data.a];

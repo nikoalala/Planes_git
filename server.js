@@ -230,7 +230,7 @@ var interval = setInterval(function() {
             }*/
 
             data.push({type:"plane", id: plane.id, x:plane.x, 
-                y:plane.y, sv:{vx: plane.vx, vy:plane.vy}, a:plane.angle, s:Math.sqrt(Math.pow(plane.vx,2)+Math.pow(plane.vy,2))});
+                y:plane.y, sv:{vx: plane.vx, vy:plane.vy}, l: clients[i].life, a:plane.angle, s:Math.sqrt(Math.pow(plane.vx,2)+Math.pow(plane.vy,2))});
 
 
             if(clients[i].bullet) {
@@ -256,11 +256,14 @@ var interval = setInterval(function() {
                             to:clients[i].id};
                             data.push(hitMsg);
 
-                            clients[i].hits.from++;
-                            clients[gameBullets[bul].origin_id].hits.to++;
+                           
 
                             clients[i].life--;
+
                             if(clients[i].life == 0) {
+                                clients[i].hits.from++;
+                                clients[gameBullets[bul].origin_id].hits.to++;
+                                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " killed by " + clients[gameBullets[bul].origin_id].pseudo + "!"});
                                 resetPlane(clients[i]);
                             }
 

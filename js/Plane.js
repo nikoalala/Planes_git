@@ -20,7 +20,7 @@ function Plane(sprite) {
 	this.y = 50;
 
 	this.angle = 0; // rad	
-	
+	this.life = 5;
 	
 
 	this.init = function(gs) {
