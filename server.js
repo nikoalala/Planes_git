@@ -6,13 +6,13 @@ var clients = {};
 var gameBullets = [];
 var PI = Math.PI;
 var SECOND = 1000;
-var FRAME_RATE = 60;
+var FRAME_RATE = 70;
 var MAX_BOOST_TIME = 0.3*FRAME_RATE; 
 var REFRESH_BOOST = -5*FRAME_RATE
 var V_MAX = 8;
 var V_BOOST = 9;
 var V_MIN = 2;
-var BULLET_SPEED = 12;
+var BULLET_SPEED = 15;
 var D_SPEED = 0.1;
 var V_ANGLE = PI / 128;
 var BULLET_LIFE = 5.0;
@@ -22,7 +22,7 @@ var PLANE_INIT_STAT = {x:0,y:50,a:0,vx:0,vy:0};
 
 var ratio = 1/1000;
 var F_MIN = 20*ratio;
-var F_MAX = 30*ratio;
+var F_MAX = 40*ratio;
 var D_F = ratio;
 var m = 1;
 var G = 9.8*ratio;
@@ -303,7 +303,7 @@ function initPlane(connection) {
 function resetPlane(client) {
     client.life = PLANE_LIFE;
     var barX=0, barY=0;
-    
+
     for(client in clients) {
         barX+=clients[client].gamePlane.x;
         barY+=clients[client].gamePlane.y;
