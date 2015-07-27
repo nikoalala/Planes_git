@@ -302,13 +302,19 @@ function initPlane(connection) {
 
 function resetPlane(client) {
     client.life = PLANE_LIFE;
+    var barX=0, barY=0;
+    
+    for(client in clients) {
+        barX+=clients[client].gamePlane.x;
+        barY+=clients[client].gamePlane.y;
+    }
 
-    client.gamePlane.x = PLANE_INIT_STAT.x
-    client.gamePlane.y = PLANE_INIT_STAT.y
-    client.gamePlane.angle = PLANE_INIT_STAT.a
-    client.gamePlane.F = F_MIN
-    client.gamePlane.vx = PLANE_INIT_STAT.vx
-    client.gamePlane.vy = PLANE_INIT_STAT.vy
+    client.gamePlane.x = Math.floor(barX);
+    client.gamePlane.y = Math.floor(barY);
+    client.gamePlane.angle = PLANE_INIT_STAT.a;
+    client.gamePlane.F = F_MIN;
+    client.gamePlane.vx = PLANE_INIT_STAT.vx;
+    client.gamePlane.vy = PLANE_INIT_STAT.vy;
 }
 
 function getBulletID() {
