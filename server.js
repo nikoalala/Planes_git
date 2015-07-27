@@ -20,6 +20,7 @@ var D_BULLET_LIFE = 0.08;
 var HIT_DISTANCE = 100;
 var PLANE_INIT_STAT = {x:0,y:50,a:0,vx:0,vy:0};
 
+var DEATH_TIMEOUT = 5 * SECOND;
 var ratio = 1/1000;
 var F_MIN = 20*ratio;
 var F_MAX = 40*ratio;
@@ -147,7 +148,7 @@ var interval = setInterval(function() {
     }
     //PLANES
     for(var i in clients) {
-        if(clients.hasOwnProperty(i)) {
+        if(clients.hasOwnProperty(i) && !clients[i].dead) {
             
 
             //BOOST
@@ -216,28 +217,13 @@ var interval = setInterval(function() {
            
             //console.log(angleMod, plane.speed);
                         //end of screen
-            if(plane.x > WINDOW_SIZE.w) {
+            if(plane.x > WINDOW_SIZE.w || plane.x < 0 || plane.y > WINDOW_SIZE.h || plane.y < 0) {
                 //TODO : suicide
-                resetPlane(clients[i]);
+                playerDie(clients[i]);
                 clients[i].hits.from++;
                 data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
             }
-            if(plane.x < 0) {
-                resetPlane(clients[i]);
-                clients[i].hits.from++;
-                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
-            }
-            if(plane.y > WINDOW_SIZE.h) {
-                resetPlane(clients[i]);
-                clients[i].hits.from++;
-                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
-            }
-            if(plane.y < 0) {
-                resetPlane(clients[i]);
-                clients[i].hits.from++;
-                data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});
-            }
-
+            
             data.push({type:"plane", id: plane.id, x:plane.x, 
                 y:plane.y, sv:{vx: plane.vx, vy:plane.vy}, l: clients[i].life, a:plane.angle, s:Math.sqrt(Math.pow(plane.vx,2)+Math.pow(plane.vy,2))});
 
@@ -271,7 +257,8 @@ var interval = setInterval(function() {
                                 clients[i].hits.from++;
                                 clients[gameBullets[bul].origin_id].hits.to++;
                                 data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " killed by " + clients[gameBullets[bul].origin_id].pseudo + "!"});
-                                resetPlane(clients[i]);
+                                
+                                playerDie(clients[i]);
                             }
 
                             gameBullets[bul].l = -1;
@@ -297,21 +284,23 @@ function getID() {
 function initPlane(connection) {
     connection.gamePlane = {};
     connection.gamePlane.id = connection.id;
+    connection.dead = false;
     resetPlane(connection);
 }
 
 function resetPlane(client) {
     client.life = PLANE_LIFE;
-    var barX=0, barY=0;
 
-    for(client in clients) {
-        barX+=clients[client].gamePlane.x;
-        barY+=clients[client].gamePlane.y;
-    }
+    client.gamePlane.x = Math.random()*WINDOW_SIZE.w*0.9+1;
+    client.gamePlane.y = Math.random()*WINDOW_SIZE.h*0.9+1;
 
-    client.gamePlane.x = Math.floor(barX);
-    client.gamePlane.y = Math.floor(barY);
-    client.gamePlane.angle = PLANE_INIT_STAT.a;
+    var reverse = PLANE_INIT_STAT.a;
+
+    if(client.gamePlane.x > WINDOW_SIZE.w/2) reverse = PLANE_INIT_STAT.a-Math.PI;
+
+    client.gamePlane.angle = reverse;
+
+
     client.gamePlane.F = F_MIN;
     client.gamePlane.vx = PLANE_INIT_STAT.vx;
     client.gamePlane.vy = PLANE_INIT_STAT.vy;
@@ -349,6 +338,15 @@ function getUsers() {
         }
     }
     return res;
+}
+
+function playerDie(client) {
+    client.dead = true;
+
+    setTimeout(function() {
+        resetPlane(client);
+        client.dead = false;
+    }, DEATH_TIMEOUT);
 }
 
 setInterval(function() {
