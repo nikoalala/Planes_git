@@ -66,7 +66,7 @@ function Plane(sprite) {
 		if(this.dead) {
 			c.font = "40px Arial";
 
-			c.fillText("You are dead, respawn in " + this.respawnTime + " seconds", canvasWidth/2, canvasHeight/2);
+			c.fillText("You are dead, respawn in " + this.respawnTime + " seconds", 100, canvasHeight/2);
 		}
 		//console.log(planePosCam, world.getCameraPos())
 		
