@@ -46,6 +46,7 @@ function Plane(sprite) {
 
 	this.timerRespawn = function() {
 		setTimeout($.proxy(function() {
+			console.log("timeout death : " this.respawnTime);
 			this.respawnTime--;
 			if(this.respawnTime < 1)
 				this.dead = false;
