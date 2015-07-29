@@ -22,7 +22,8 @@ function handleMsg(json) {
                 refreshPlayer(players[p])
             }
         }
-        
+    } else if (json.type == "death") {
+        handleDeathMsg(json);
     }
 }
 
@@ -50,6 +51,15 @@ function refreshPlayer(player) {
 }
 function deletePlayerStats(id) {
     $(".player[data-id="+id+"]").remove();
+}
+
+function handleDeathMsg(json) {
+    var id = json.player;
+    if(id == myPlayerID) {
+        var plane = planes.existsPlaneID(id);
+        plane.die();
+
+    }
 }
 
 function handleUpdateMsg(json) {

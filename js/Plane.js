@@ -15,7 +15,8 @@ function Plane(sprite) {
 		this.sprite.action("fly-right");
 	},this));
 	this.speed = 0;
-	
+	this.dead = false;
+	this.respawnTime = 0;
 	this.x = 0;
 	this.y = 50;
 
@@ -37,6 +38,22 @@ function Plane(sprite) {
 		this.sprite.update();
 	};
 	
+	this.die = function() {
+		this.dead = true;
+		this.respawnTime = 5;
+		
+	}
+
+	this.timerRespawn = function() {
+		setTimeout($.proxy(function() {
+			this.respawnTime--;
+			if(this.respawnTime < 1)
+				this.dead = false;
+			else 
+				this.timerRespawn();
+		},this),1000);
+	}
+
 	this.draw = function(c,gs) {
 		//console.debug("draw Plane");
 		var planePosCam = world.camera([this.x,this.y]);
@@ -46,6 +63,11 @@ function Plane(sprite) {
 
 		c.fillText(this.pseudo, world.camera([this.x,this.y])[0],world.camera([this.x,this.y-12])[1]);
 
+		if(this.dead) {
+			c.font = "40px Arial";
+
+			c.fillText("You are dead, respawn in " + this.respawnTime + " seconds", canvasWidth/2, canvasHeight/2);
+		}
 		//console.log(planePosCam, world.getCameraPos())
 		
 		if(planePosCam[0] > canvasWidth) {

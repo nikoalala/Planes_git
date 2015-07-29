@@ -342,7 +342,7 @@ function getUsers() {
 
 function playerDie(client) {
     client.dead = true;
-
+    sendToAll({type:"death", player:client.id});
     setTimeout(function() {
         resetPlane(client);
         client.dead = false;
