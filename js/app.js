@@ -10,12 +10,12 @@ function handleMsg(json) {
         handleDeleteMsg(json)
     } else if(json.type == "welcome") {
         welcome = true;
-        console.log(json);
+        //console.log(json);
         var data = json.data; 
         myPlayerID = data;
         serverBox = json.world.box;
     } else if(json.type == "players") {
-        console.log(json);
+        //console.log(json);
         var players=json.data.players;
         for(var p in players) {
             if(players.hasOwnProperty(p)) {
@@ -91,7 +91,7 @@ function handleEventMsg(data) {
 function handlePlaneMsg(data) {
      var plane = planes.existsPlaneID(data.id);
     if(plane) {
-        //console.log("update plane "+data.id)
+        ////console.log("update plane "+data.id)
         plane.x = data.x;
         plane.y = data.y;
         plane.angle = data.a;
@@ -107,13 +107,13 @@ function handlePlaneMsg(data) {
 
     } else {
         if(myPlayerID == undefined) return;
-        console.log("create plane "+data.id, myPlayerID, data.id == myPlayerID);
+        //console.log("create plane "+data.id, myPlayerID, data.id == myPlayerID);
 
         var p_sprite = "images/plane2.gif"
         if(data.id == myPlayerID) 
             p_sprite = "images/plane1.gif"
 
-        console.log(p_sprite);
+        //console.log(p_sprite);
 
         plane = new Plane(p_sprite);
         plane.id = data.id;
@@ -124,7 +124,7 @@ function handlePlaneMsg(data) {
         gs.addEntity(plane);
 
         planes.push(plane);
-        console.log(planes)
+        //console.log(planes)
     }
 }
 

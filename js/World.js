@@ -126,12 +126,12 @@ function World() {
 	};
 
 	this.keyDown_16 = function() {	//shift
-		console.log("shift held")
+		//console.log("shift held")
 		connection.send(JSON.stringify({action:"B", value:"d"})); //boost
 	};
 
 	this.keyUp_16 = function() {	//shift
-		console.log("shift up")
+		//console.log("shift up")
 		connection.send(JSON.stringify({action:"B", value:"u"})); //boost
 	};
 }
