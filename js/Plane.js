@@ -9,6 +9,7 @@ function Plane(sprite) {
 	this.FLY_FRAME = 2;
 	this.sprite = new Sprite(["center", "center"], { 	
 		"fly-right":[[sprite, 1],],
+		"fly-left":[["images/planeV2_flip.png",2],],
 		"fly-hit":[["images/planeV2.png",3],]
 	}, $.proxy(function() {
 		console.log("chargé");
@@ -133,7 +134,14 @@ function Plane(sprite) {
 			else
 				drawCursor(planePosCam[0], cursordY, c);
 		}
-
+		console.log(this.angle%(Math.PI*2))
+		if((this.angle%(2*Math.PI)) > (Math.PI/2) || (this.angle%(2*Math.PI)) < -(Math.PI/2) ) {
+			
+			this.sprite.action("fly-left");
+		} else {
+			
+			this.sprite.action("fly-right");
+		}
 		this.sprite.draw(c, planePosCam);
 	};
 }
