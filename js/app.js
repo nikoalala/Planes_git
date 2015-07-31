@@ -55,11 +55,10 @@ function deletePlayerStats(id) {
 
 function handleDeathMsg(json) {
     var id = json.player;
-    if(id == myPlayerID) {
-        var plane = planes.existsPlaneID(id);
-        plane.die();
 
-    }
+    var plane = planes.existsPlaneID(id);
+    if(plane)
+        plane.die();
 }
 
 function handleUpdateMsg(json) {
@@ -91,6 +90,8 @@ function handleEventMsg(data) {
 function handlePlaneMsg(data) {
      var plane = planes.existsPlaneID(data.id);
     if(plane) {
+
+        plane.updateData(data.x, data.y, data.a, data.s, data.sv, data.l);
         ////console.log("update plane "+data.id)
         plane.x = data.x;
         plane.y = data.y;
@@ -109,9 +110,9 @@ function handlePlaneMsg(data) {
         if(myPlayerID == undefined) return;
         //console.log("create plane "+data.id, myPlayerID, data.id == myPlayerID);
 
-        var p_sprite = "images/plane2.gif"
+        var p_sprite = "images/planeV2.png"
         if(data.id == myPlayerID) 
-            p_sprite = "images/plane1.gif"
+            p_sprite = "images/planeV2.png"
 
         //console.log(p_sprite);
 
@@ -121,7 +122,11 @@ function handlePlaneMsg(data) {
         plane.y = data.y;
         plane.angle = data.a;
 
+        if(data.id == myPlayerID) 
+            plane.me = true;
+
         gs.addEntity(plane);
+
 
         planes.push(plane);
         //console.log(planes)

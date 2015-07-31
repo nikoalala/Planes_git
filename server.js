@@ -17,7 +17,7 @@ var D_SPEED = 0.1;
 var V_ANGLE = PI / 128;
 var BULLET_LIFE = 5.0;
 var D_BULLET_LIFE = 0.08;
-var HIT_DISTANCE = 100;
+var HIT_DISTANCE = 150;
 var PLANE_INIT_STAT = {x:0,y:50,a:0,vx:0,vy:0};
 
 var DEATH_TIMEOUT = 5 * SECOND;

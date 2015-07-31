@@ -9,11 +9,24 @@ function Plane(sprite) {
 	this.FLY_FRAME = 2;
 	this.sprite = new Sprite(["center", "center"], { 	
 		"fly-right":[[sprite, 1],],
+		"fly-hit":[["images/planeV2.png",3],]
+	}, $.proxy(function() {
+		console.log("chargé");
+		this.sprite.action("fly-right");
+	},this));
+
+	/*
+	this.sprite = new Sprite(["center", "center"], { 	
+		"fly-right":[[sprite, 1],],
 		"fly-hit":[["images/planeHit.gif",3],]
 	}, $.proxy(function() {
 		console.log("chargé");
 		this.sprite.action("fly-right");
 	},this));
+*/
+
+
+	this.me = false;
 	this.speed = 0;
 	this.dead = false;
 	this.respawnTime = 0;
@@ -25,9 +38,15 @@ function Plane(sprite) {
 	
 
 	this.init = function(gs) {
-
+		
 	};
 	
+	this.updateData = function() {
+		//this.dead = false;
+	}
+
+
+
 	this.update = function() {
 		this.sprite.action("fly-right");
 		if(this.hit) {
@@ -40,13 +59,20 @@ function Plane(sprite) {
 	
 	this.die = function() {
 		this.dead = true;
+
+		this.lauchDeadAnimation();
+
 		this.respawnTime = 5;
-		
+		this.timerRespawn();		
 	}
 
+	this.lauchDeadAnimation = function() {
+
+	}
+	
 	this.timerRespawn = function() {
 		setTimeout($.proxy(function() {
-			console.log("timeout death : " this.respawnTime);
+			console.log("timeout death : " + this.respawnTime);
 			this.respawnTime--;
 			if(this.respawnTime < 1)
 				this.dead = false;
@@ -64,10 +90,14 @@ function Plane(sprite) {
 
 		c.fillText(this.pseudo, world.camera([this.x,this.y])[0],world.camera([this.x,this.y-12])[1]);
 
-		if(this.dead) {
+		if(this.dead && this.me) {
 			c.font = "40px Arial";
+			c.fillText("You are dead, respawn in " + this.respawnTime + " seconds", 100, 100);
+		}
 
-			c.fillText("You are dead, respawn in " + this.respawnTime + " seconds", 100, canvasHeight/2);
+		if(this.dead) {
+
+			return;
 		}
 		//console.log(planePosCam, world.getCameraPos())
 		
