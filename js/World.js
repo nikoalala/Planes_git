@@ -134,6 +134,8 @@ function World() {
 		//console.log("shift up")
 		connection.send(JSON.stringify({action:"B", value:"u"})); //boost
 	};
+
+
 }
 
 
@@ -142,3 +144,17 @@ function World() {
 function updateCanvas() {
     ctx.putImageData(canvasData, 0, 0);
 }
+
+$(document).ready(function() {
+
+
+	$("#changePseudo").click(function() {
+	    var p = window.prompt("Who are you ?","");
+	    localStorage.pseudo = p;
+	    connection.send(JSON.stringify({action:"P", value:localStorage.pseudo}));
+	});
+
+
+
+
+})

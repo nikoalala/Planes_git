@@ -201,24 +201,23 @@ var interval = setInterval(function() {
                 }
             }
 */
+            if(clients[i].pseudo != undefined) {
+                var sina = Math.sin(plane.angle);
+                var cosa = Math.cos(plane.angle);
 
-            var sina = Math.sin(plane.angle);
-            var cosa = Math.cos(plane.angle);
+                ax = (0.5*rho*S*Cz)*plane.vx - (0.5*rho*S*Cx)*plane.vx + plane.F*cosa 
+                ay = (m*G) - (0.5*rho*S*Cx)*plane.vy + (0.5*rho*S*Cz)*plane.vy + plane.F*sina 
 
-            ax = (0.5*rho*S*Cz)*plane.vx - (0.5*rho*S*Cx)*plane.vx +  + plane.F*cosa 
-            ay = (m*G) - (0.5*rho*S*Cx)*plane.vy + (0.5*rho*S*Cz)*plane.vy + plane.F*sina 
+                plane.vx += ax;
+                plane.vy += ay;
 
-            plane.vx += ax;
-            plane.vy += ay;
+                plane.x += plane.vx;
+                plane.y += plane.vy; 
 
-            plane.x += plane.vx;
-            plane.y += plane.vy; 
-
-           
+           }
             //console.log(angleMod, plane.speed);
                         //end of screen
             if(plane.x > WINDOW_SIZE.w || plane.x < 0 || plane.y > WINDOW_SIZE.h || plane.y < 0) {
-                //TODO : suicide
                 playerDie(clients[i]);
                 clients[i].hits.from++;
                 data.push({type:"event", message: (new Date()).toLocaleTimeString() + " : " + clients[i].pseudo + " has committed suicide!"});

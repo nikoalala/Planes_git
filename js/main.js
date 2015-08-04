@@ -3,8 +3,8 @@ var gs;
 var r;
 var myPlayerID;
 var world;
-var canvasHeight;
-var canvasWidth; 
+var canvasHeight = 600;
+var canvasWidth = 800; 
 var ctx;
 var canvasData;
 var sNoise;
@@ -12,6 +12,8 @@ var sNoise;
 var distanceMax;
 
 var old_framecount = 0;
+
+var last_move = new Date().getTime();
 
 function startGame(gs) {
     // our game entity
@@ -40,13 +42,13 @@ function launch() {
 
     distanceMax = Math.pow(canvasWidth/2, 2) + Math.pow(canvasHeight/2, 2);
     
-    console.log($(document).height())
+    //console.log($(document).height())
     // grab the surface div and insert a canvas of the same size inside it
     var surface = document.getElementById("surface");
     var newcanvas = document.createElement("canvas");
     // set the width and height of our canvas to be the same as the container div
-    newcanvas.width = 800;//newcanvas.width = (canvasWidth);
-    newcanvas.height = 600; //newcanvas.height = (canvasHeight);
+    newcanvas.width = canvasWidth;//newcanvas.width = (canvasWidth);
+    newcanvas.height = canvasHeight; //newcanvas.height = (canvasHeight);
     surface.appendChild(newcanvas);
 
     ctx = newcanvas.getContext("2d");
@@ -57,6 +59,37 @@ function launch() {
     startGame(gs);
     gs.launch();
 
+    $("canvas").mousemove(function(e) {
+        if(new Date().getTime() - last_move > 1000/60) {
+
+        var mouseX = e.clientX - $("#surface").offset().left;
+        var mouseY = e.clientY - $("#surface").offset().top;
+
+        var mouseAngle = -(Math.atan2((canvasHeight/2)-mouseY,(canvasWidth/2)-mouseX)-Math.PI);
+
+        var anglePlaneTmp = -anglePlane;
+
+        if(anglePlaneTmp<0) anglePlaneTmp+=2*Math.PI;
+
+
+        console.log(mouseAngle, anglePlaneTmp);
+
+        if(mouseAngle - anglePlaneTmp > 0) {
+            if(mouseAngle > anglePlaneTmp+PI)
+                connection.send(JSON.stringify({action:"T", value:"r"}));
+            else 
+                connection.send(JSON.stringify({action:"T", value:"l"}));
+        } else {
+            if(mouseAngle > anglePlaneTmp+PI)
+                connection.send(JSON.stringify({action:"T", value:"l"}));   
+            else 
+                connection.send(JSON.stringify({action:"T", value:"r"}));
+        }
+       
+        last_move = new Date().getTime();
+    }
+
+    });
 
     setInterval(function() {
         var fps = gs.frameCount - old_framecount;

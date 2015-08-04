@@ -134,7 +134,7 @@ function Plane(sprite) {
 			else
 				drawCursor(planePosCam[0], cursordY, c);
 		}
-		console.log(this.angle%(Math.PI*2))
+		//console.log(this.angle%(Math.PI*2))
 		if((this.angle%(2*Math.PI)) > (Math.PI/2) || (this.angle%(2*Math.PI)) < -(Math.PI/2) ) {
 			
 			this.sprite.action("fly-left");
