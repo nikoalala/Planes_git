@@ -59,7 +59,7 @@ function launch() {
     startGame(gs);
     gs.launch();
 
-    $("canvas").mousemove(function(e) {
+    $("canvas").on("mousemove touchmove", function(e) {
         if(new Date().getTime() - last_move > 1000/60) {
 
         var mouseX = e.clientX - $("#surface").offset().left;
